@@ -1,6 +1,5 @@
 import json
 import pickle
-from tkinter import dialog
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader, SequentialSampler
