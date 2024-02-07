@@ -1,5 +1,5 @@
 import os
-os.environ['WANDB_SILENT']="true"
+#WANDB_SILENT']="true"
 
 import sys
 sys.path.append('../')
@@ -63,6 +63,7 @@ args = parser.parse_args()
 # Set GPU
 print('######################################################################')
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#device = "cpu"
 print('Device:', device)
 print('Current cuda device:', torch.cuda.current_device())
 print('Count of using GPUs:', torch.cuda.device_count())
@@ -71,7 +72,7 @@ print('######################################################################')
 
 
 # Start WANDB Log (Set Logging API)
-wandb.init(project="ICSK4AS", reinit=True, entity='icsk4as')
+#wandb.init(project="ICSK4AS", reinit=True, entity='icsk4as')
 if args.use_paracomet:
     cs = "para"
     if args.use_roberta:
@@ -90,7 +91,7 @@ if args.use_sentence_transformer:
 print("#"*50)
 print(cs)
 print("#"*50)
-wandb.run.name = f"context_{args.dataset_name}_{args.relation}_{cs}_lr{str(args.init_lr)}"
+#wandb.run.name = f"context_{args.dataset_name}_{args.relation}_{cs}_lr{str(args.init_lr)}"
 
 
 # Define Global Values
@@ -228,7 +229,7 @@ finetune_args = Seq2SeqTrainingArguments(
     generation_num_beams=5,
     metric_for_best_model='eval_rouge1',
     greater_is_better=True,
-    report_to = 'wandb',
+    #report_to = 'wandb',
 )
 
 def compute_metrics(eval_pred):
@@ -309,4 +310,4 @@ with open(args.test_output_file_name,"w") as f:
         f.write(i.replace("\n","")+"\n")
 """
 # END WANDB log
-wandb.finish()
+#wandb.finish()

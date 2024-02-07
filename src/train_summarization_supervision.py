@@ -73,7 +73,7 @@ print('######################################################################')
 
 
 # Start WANDB Log (Set Logging API)
-wandb.init(project="ICSK4AS", reinit=True, entity='icsk4as')
+#wandb.init(project="ICSK4AS", reinit=True, entity='icsk4as')
 
 
 # Define Global Values
@@ -291,4 +291,4 @@ with open(args.test_output_file_name,"w") as f:
         f.write(i.replace("\n","")+"\n")
 """
 # END WANDB log
-wandb.finish()
+#wandb.finish()

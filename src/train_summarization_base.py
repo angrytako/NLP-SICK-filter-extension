@@ -73,8 +73,8 @@ print('######################################################################')
 
 
 # Start WANDB Log (Set Logging API)
-wandb.init(project="ICSK4AS", reinit=True, entity='icsk4as')
-wandb.run.name = f"base_{args.dataset_name}_{'para' if args.use_paracomet else ''}_lr{str(args.init_lr)}"
+#wandb.init(project="ICSK4AS", reinit=True, entity='icsk4as')
+#wandb.run.name = f"base_{args.dataset_name}_{'para' if args.use_paracomet else ''}_lr{str(args.init_lr)}"
 
 # Define Global Values
 model_checkpoint_list = [
@@ -321,4 +321,4 @@ with open(args.test_output_file_name,"w") as f:
         f.write(i.replace("\n","")+"\n")
 """
 # END WANDB log
-wandb.finish()
+#wandb.finish()
