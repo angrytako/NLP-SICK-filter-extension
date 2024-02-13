@@ -37,9 +37,7 @@ class SamsumDataset(Dataset):
         self.sentence_transformer = sentence_transformer
         print(self.relation)
         ##################################################
-        if split_type=="train":
-            self.data = load_dataset('samsum',split=split_type).select(range(2000)) 
-        else: self.data = load_dataset('samsum',split=split_type)
+        self.data = load_dataset('samsum',split=split_type)
 
         self.dialogue = self.data['dialogue']
         self.summary = self.data['summary']
@@ -63,7 +61,11 @@ class SamsumDataset(Dataset):
                 if self.sentence_transformer:
                     with open(f"../data/COMET_data/comet/dialogue/samsum/sentence_transformer/comet_{self.split_type}_z.json") as f:
                         self.sentence_transformer_classified_z = json.load(f)
-                        
+                        if self.split_type == "train":
+                            ids = self.data["id"]
+                            subset_idxs = [ids.index(elem) for elem in self.sentence_transformer_classified_z.keys()]
+                            self.data = self.data.select(subset_idxs)
+                            self.id = self.data['id']
                     
             else:
                 
