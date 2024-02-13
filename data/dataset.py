@@ -37,8 +37,10 @@ class SamsumDataset(Dataset):
         self.sentence_transformer = sentence_transformer
         print(self.relation)
         ##################################################
-        
-        self.data = load_dataset('samsum',split=split_type)
+        if split_type=="train":
+            self.data = load_dataset('samsum',split=split_type).select(range(2000)) 
+        else: self.data = load_dataset('samsum',split=split_type)
+
         self.dialogue = self.data['dialogue']
         self.summary = self.data['summary']
         self.id = self.data['id']
