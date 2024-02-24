@@ -8,7 +8,7 @@ from classifier import *
 
 # paramters
 learning_rate = 1e-6
-num_iterations = 5000 #50000
+num_iterations = 10000 #50000
 num_classes = 25
 
 # 1dCNN
@@ -16,13 +16,14 @@ num_channels = 1  # Number of channels in the input data
 hidden_units = 64  # Number of units in the hidden layers
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-# savung and modality
+# saving and modality
 mode = "train"
 save_model = True
 load_model = True
 model_save_path = "./model"  # it will have automatically appended the current date
-model_load_path = "model2024-02-03_09_12.pt"
-
+model_load_path = "model2024-02-08_12_45.pt"
+test_file_path = "./comet_samsum_test_z_entire.pkl"
+train_file_path = "./comet_samsum_train_z_entire.pkl"
 # dictionary
 
 ohe_dict = {'xNeed': np.array([1, 0, 0, 0, 0], dtype=np.float32),
@@ -32,7 +33,7 @@ ohe_dict = {'xNeed': np.array([1, 0, 0, 0, 0], dtype=np.float32),
             'xReason': np.array([0, 0, 0, 0, 1], dtype=np.float32)}
 
 # read test
-df_test = pd.read_pickle("./comet_samsum_test_z_entire.pkl")
+df_test = pd.read_pickle(test_file_path)
 
 df_test["cs_type_ohe"] = df_test["cs_type"].map(ohe_dict)
 preprocessed_test = df_test[["sample_id", "sentence_id", "cs_type_ohe", "cs_encoded", "cos_similary_cs_summmary"]]
@@ -49,10 +50,10 @@ Y_test = torch.tensor(test["Y"]).to(device)
 # choose model
 model_type = "simple"  # "reduction"  # can be either that or "simple"
 
-# stack the two parts
-df = pd.read_pickle("./comet_samsum_train_pt1_z_entire.pkl")
-df2 = pd.read_pickle("./comet_samsum_train_pt2_z_entire.pkl")
-df = pd.concat([df, df2], ignore_index=True)
+#read train 
+df = pd.read_pickle(train_file_path)
+#df2 = pd.read_pickle("./comet_samsum_train_pt2_z_entire.pkl")
+#df = pd.concat([df, df2], ignore_index=True)
 
 df["cs_type_ohe"] = df["cs_type"].map(ohe_dict)
 preprocessed = df[["sample_id", "sentence_id", "cs_type_ohe", "cs_encoded", "cos_similary_cs_summmary"]]
@@ -121,7 +122,7 @@ def test(X, Y, model, loss_fn):
         # correct =
         for i, similarities in enumerate(pred):
             correct += int(similarities.argmax() == Y[i].argmax())
-    print(f"Test Error: \n Accuracy: {(100 * correct / len(Y)):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+    print(f"Test Error: \n Accuracy: {(100 * correct / len(Y))}%, Avg loss: {test_loss:>8f} \n")
 
 
 ### TESTING THE MODEL
